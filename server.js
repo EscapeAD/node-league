@@ -11,6 +11,7 @@ const express         = require('express'),
 //view engine
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+app.use(bodyParser.urlencoded({extended: false}))
 
 //db
 mongoose.connect(secret.mlab);
@@ -18,6 +19,11 @@ mongoose.connect(secret.mlab);
 //route
 app.get('/', (req, res)=>{
   res.render('index')
+})
+
+app.post('/summoner', (req, res)=>{
+  console.log(req.body.name)
+  res.redirect(`/summoner/${req.body.name}`)
 })
 
 app.get('/summoner/:name', (req, res)=>{
