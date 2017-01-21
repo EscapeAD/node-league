@@ -21,38 +21,50 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/summoner/:name', (req, res)=>{
-  let summoner = []
+  let champ       = [],
+      searchname  = req.params.name.toLowerCase();
   //want to check the database for user =
-  Summoner.find({name: req.params.name}, (err, summon)=>{
+  Summoner.findOne({name: searchname}, (err, summon)=>{
     if(err){
-      console.log('hi')
-    }
-    if(summoner.length === 0){
-      console.log('Check it')
-    }
-  })
-  //request-promise
-  request({
-    uri: `https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/${req.params.name}`,
-    qs: {
-      api_key: secret.key
-    },
-    json: true
-  })
-    .then((data) => {
-      res.render('summoner', {
-          summon: data,
-          name: req.params.name
-      })
-    })
-    .catch((err) => {
       console.log(err)
-      res.send(err)
+    }
+    console.log(summon);
+    console.log('=====');
+    champ = summon
+  /// want to check and pull
+  if(!summon){
+    //request-promise
+    request({
+      uri: `https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/${searchname}`,
+      qs: {
+        api_key: secret.key
+      },
+      json: true
     })
+      .then((data) => {
+        let record = new Summoner({
+          summonerId: data[searchname].id,
+          name: data[searchname].name.toLowerCase(),
+          profileIconId: data[searchname].profileIconId,
+          revisionDate: data[searchname].revisionDate,
+          summonerLevel: data[searchname].summonerLevel
+        })
+        console.log('JSON CALL HERE')
+        record.save();
+        champ = record
+      })
+      .catch((err) => {
+        console.log(err)
+        res.send(err)
+      })
+  }
+})
 
+setTimeout((x)=>{
+  console.log("then")
+  res.send(champ)
 
-
-
+}, 2000)
 
 })
 

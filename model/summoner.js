@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const summonerSchema = new mongoose.Schema({
-  id: Number,
+  summonerId: Number,
   name: String,
   profileIconId: Number,
   revisionDate: Number,
