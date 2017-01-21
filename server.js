@@ -62,9 +62,11 @@ app.get('/summoner/:name', (req, res)=>{
 
 setTimeout((x)=>{
   console.log("then")
-  res.send(champ)
+  res.render('summoner',{
+    summon: champ
+  })
 
-}, 2000)
+}, 1500)
 
 })
 

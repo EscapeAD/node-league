@@ -1,8 +1,10 @@
 <% include partials/header %>
-    <h1><%= name %></h1>
-    <%= summon.id %>  </br>
-    <%= summon.name %> </br>
-    <%= summon.profileIconId %> </br>
-    <%= summon.revisionDate %> </br>
-    <%= summon.summonerLevel %> </br>
+<div class='container'>
+    <h1><%= summon.name.toUpperCase() %></h1>
+    <strong>ID:</strong>    <%= summon.summonerId %>  </br>
+    <strong>Summoner:</strong>    <%= summon.name %> </br>
+    <strong>Icon:</strong>    <%= summon.profileIconId %> </br>
+    <strong>Profile update:</strong>    <%= summon.revisionDate %> </br>
+    <strong>Level:</strong>     <%= summon.summonerLevel %> </br>
+</div>
 <% include partials/footer %>
