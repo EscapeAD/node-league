@@ -2,6 +2,7 @@ const express         = require('express'),
       bodyParser      = require('body-parser'),
       mongoose        = require('mongoose'),
       request         = require('request-promise'),
+      secret          = require('./secret'),
       app             = express(),
       path            = require('path'),
       port            = 3000;
@@ -21,13 +22,15 @@ app.get('/summoner/:name', (req, res)=>{
   request({
     uri: `https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/${req.params.name}`,
     qs: {
-      api_key: ''
-         // Use your accuweather API key here
+      api_key: secret.key
     },
     json: true
   })
     .then((data) => {
-      res.send('index', data)
+      res.render('summoner', {
+          summon: data,
+          name: req.params.name
+      })
     })
     .catch((err) => {
       console.log(err)
