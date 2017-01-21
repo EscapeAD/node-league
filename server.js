@@ -3,6 +3,7 @@ const express         = require('express'),
       mongoose        = require('mongoose'),
       request         = require('request-promise'),
       secret          = require('./secret'),
+      Summoner        = require('./model/summoner'),
       app             = express(),
       path            = require('path'),
       port            = 3000;
@@ -11,13 +12,25 @@ const express         = require('express'),
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
-//route
+//db
+mongoose.connect(secret.mlab);
 
+//route
 app.get('/', (req, res)=>{
   res.render('index')
 })
 
 app.get('/summoner/:name', (req, res)=>{
+  let summoner = []
+  //want to check the database for user =
+  Summoner.find({name: req.params.name}, (err, summon)=>{
+    if(err){
+      console.log('hi')
+    }
+    if(summoner.length === 0){
+      console.log('Check it')
+    }
+  })
   //request-promise
   request({
     uri: `https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/${req.params.name}`,
